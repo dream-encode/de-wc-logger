@@ -1,4 +1,10 @@
 {
+    "name": "dream-encode/de-wc-logger",
+    "description": "Custom WC Logger plugin.",
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    },
     "require-dev": {
         "szepeviktor/phpstan-wordpress": "^1.0",
         "phpstan/extension-installer": "^1.1",
