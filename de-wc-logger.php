@@ -9,7 +9,7 @@
  *
  * @link              https://dream-encode.com
  * @since             1.0.0
- * @package           DE\WC_Logger
+ * @package           DreamEncode\WC_Logger
  *
  * @wordpress-plugin
  * Plugin Name:       Dream-Encode - WooCommerce Logger
@@ -26,14 +26,14 @@
  * Primary Branch:    main
  */
 
-namespace DE;
+namespace DreamEncode;
 
 /**
  * Simple logger class to log data to custom files.
  *
  * Relies on the bundled logger class in WooCommerce.
  *
- * @package  DE\WC_Logger
+ * @package  DreamEncode\WC_Logger
  * @author   David Baumwald <david@dream-encode.com>
  */
 class WC_Logger {
