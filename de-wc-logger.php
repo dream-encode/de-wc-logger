@@ -28,8 +28,6 @@
 
 namespace DE;
 
-define( 'DE_WC_LOGGER_PLUGIN_FILE', __FILE__ );
-
 /**
  * Simple logger class to log data to custom files.
  *
