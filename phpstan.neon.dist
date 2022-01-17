@@ -3,8 +3,8 @@ parameters:
     treatPhpDocTypesAsCertain: false
     paths:
         - de-wc-logger.php
+        - includes
     bootstrapFiles:
-        - /includes/mmewoa-constants.php
-        - /includes/class-mmewoa.php
+        - de-wc-logger.php
         - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
         - %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php
