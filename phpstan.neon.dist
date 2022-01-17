@@ -1,0 +1,10 @@
+parameters:
+    level: 3
+    treatPhpDocTypesAsCertain: false
+    paths:
+        - de-wc-logger.php
+    bootstrapFiles:
+        - /includes/mmewoa-constants.php
+        - /includes/class-mmewoa.php
+        - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
+        - %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php
