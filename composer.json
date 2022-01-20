@@ -2,6 +2,7 @@
     "name": "dream-encode/de-wc-logger",
     "description": "Custom WC Logger plugin.",
     "type": "wordpress-plugin",
+    "license": "MIT",
     "require": {
         "composer/installers": "~1.0"
     },
