@@ -1,0 +1,81 @@
+name: Build Assets, Generate Installable Plugin
+on:
+  release:
+    types: [published]
+jobs:
+  # Build the release asset.
+  #
+  # Performs the following steps:
+  # - Checks out the repository.
+  # - Sets up PHP.
+  # - Configures caching for PHPCS scans.
+  # - Installs Composer dependencies.
+  # - Make Composer packages available globally.
+  # - Runs PHPCS on all plugin code with warnings suppressed.
+  build:
+    name: Build Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debugging
+        run: |
+          php --version
+          php -m
+          composer --version
+
+      - name: Yarn actions
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: 16
+
+      - name: Install dependencies 📦
+        run: yarn install --frozen-lockfile
+
+      - name: Build a production bundle
+        run: yarn build
+
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
+
+      # Since Composer dependencies are installed using `composer update` and no lock file is in version control,
+      # passing a custom cache suffix ensures that the cache is flushed at least once per week.
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6 # v2.2.0
+        with:
+            composer-options: "--no-dev --ignore-platform-reqs --optimize-autoloader"
+
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: '${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip'
+          exclusions: '*.git* /*node_modules/* *.dist composer.* package.json *.lock webpack.config.js /admin/assets/src/* /public/assets/src/* *.map .babelrc postcss.config.js /.cache'
+
+      - name: Upload zip
+        uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+        with:
+            name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+            path: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip
+
+      - name: Upload release assets
+        uses: dream-encode/upload-release-asset-node16@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repo_owner: ${{ github.event.repository.owner.login }}
+          repo_name: ${{ github.event.repository.name }}
+          release_id: ${{ github.event.release.id }}
+          asset_path: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip
+          asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
+          upload_url: ${{ github.event.release.upload_url }}
