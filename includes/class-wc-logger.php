@@ -102,10 +102,11 @@ class WC_Logger {
 			case 'development':
 			case 'local':
 			default:
-				error_log(
+				// @phpstan-ignore-next-line
+				error_log( // @phpstan-ignore-line
 					sprintf(
 						'%1$s: %2$s',
-						'MMIL',
+						strtoupper( self::$namespace ),
 						$data
 					)
 				);

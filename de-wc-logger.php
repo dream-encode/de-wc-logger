@@ -15,7 +15,7 @@
  * Plugin Name:       Dream-Encode - WooCommerce Logger
  * Plugin URI:        https://maxmarineelectronics.com
  * Description:       A small WordPress plugin to create dedicated log files using WC_Logger.
- * Version:           0.9.0
+ * Version:           1.0.0
  * Author:            David Baumwald
  * Author URI:        https://dream-encode.com
  * License:           GPL-2.0+
@@ -24,6 +24,7 @@
  * Domain Path:       /languages
  * GitHub Plugin URI: dream-encode/de-wc-logger
  * Primary Branch:    main
+ * Release Asset:     true
  */
 
 namespace DreamEncode;
