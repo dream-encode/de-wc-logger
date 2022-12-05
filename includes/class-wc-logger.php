@@ -28,17 +28,7 @@ class WC_Logger {
 	 * @access  protected
 	 * @var     string  $namespace  Log namespace.
 	 */
-	protected $namespace = '';
-
-	/**
-	 * Constructor.
-	 *
-	 * @since  0.9.0
-	 * @param  string  $namespace  Namespace for this instance.
-	 */
-	public function __construct( $namespace ) {
-		$this->namespace = $namespace;
-	}
+	protected static $namespace = 'de-wc';
 
 	/**
 	 * Log data.
@@ -48,7 +38,7 @@ class WC_Logger {
 	 * @param  string  $level  Log level.
 	 * @return void
 	 */
-	public function log( $data, $level = 'info' ) {
+	public static function log( $data, $level = 'info' ) {
 		if ( ! function_exists( 'wc_get_logger' ) ) {
 			// @phpcs:ignore
 			error_log(
@@ -85,14 +75,41 @@ class WC_Logger {
 					__METHOD__,
 					implode( '`, `', $available_log_levels )
 				),
-				array( 'source' => $this->namespace )
+				array( 'source' => self::namespace )
 			);
+
+			return;
 		}
 
 		if ( is_object( $data ) || is_array( $data ) ) {
 			$data = print_r( $data, true ); // @phpcs:ignore
 		}
 
-		$logger->log( $level, $data, array( 'source' => $this->namespace ) );
+		$wp_environment_type = 'production';
+
+		if ( function_exists( 'wp_get_environment_type' ) ) {
+			$wp_environment_type = wp_get_environment_type();
+		}
+
+		switch ( $wp_environment_type ) {
+			case 'production':
+			case 'staging':
+				$logger = \wc_get_logger();
+
+				$logger->info( $data, array( 'source' => self::$namespace ) );
+				break;
+
+			case 'development':
+			case 'local':
+			default:
+				error_log(
+					sprintf(
+						'%1$s: %2$s',
+						'MMIL',
+						$data
+					)
+				);
+				break;
+		}
 	}
 }
