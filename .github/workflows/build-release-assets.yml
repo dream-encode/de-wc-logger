@@ -33,18 +33,6 @@ jobs:
           php -m
           composer --version
 
-      - name: Yarn actions
-        uses: actions/setup-node@v3
-        with:
-          cache: 'yarn'
-          node-version: 16
-
-      - name: Install dependencies 📦
-        run: yarn install --frozen-lockfile
-
-      - name: Build a production bundle
-        run: yarn build
-
       - name: "Validate composer.json and composer.lock"
         run: "composer validate --strict"
 
